@@ -1,0 +1,24 @@
+# permissions for end users to edit custommysqls.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: custommysql-editor-role
+rules:
+- apiGroups:
+  - workshop.example.com
+  resources:
+  - custommysqls
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - workshop.example.com
+  resources:
+  - custommysqls/status
+  verbs:
+  - get

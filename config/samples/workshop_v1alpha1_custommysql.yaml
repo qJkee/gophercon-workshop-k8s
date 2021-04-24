@@ -1,0 +1,6 @@
+apiVersion: workshop.example.com/v1alpha1
+kind: CustomMysql
+metadata:
+  name: custommysql-sample
+spec:
+  size: 2

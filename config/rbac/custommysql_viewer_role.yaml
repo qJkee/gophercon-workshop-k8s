@@ -1,0 +1,20 @@
+# permissions for end users to view custommysqls.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: custommysql-viewer-role
+rules:
+- apiGroups:
+  - workshop.example.com
+  resources:
+  - custommysqls
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - workshop.example.com
+  resources:
+  - custommysqls/status
+  verbs:
+  - get
