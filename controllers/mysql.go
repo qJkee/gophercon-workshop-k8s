@@ -16,7 +16,7 @@ func (r *CustomMysqlReconciler) manageReplication(cr *v1alpha1.CustomMysql) erro
 	conf.Passwd = "root_password"
 	conf.Net = "tcp"
 	// ТУТ НУЖНО ПРАВИЛЬНО ЗАПИСАТЬ АДРЕС, HINT ЕСТЬ =)
-	// conf.Addr = "$(cr.Name)-$(POD_NUM).some-name-mysql.$(NAMESPACE_NAME).svc.cluster.local:33061"
+	// conf.Addr = "$(Statefulset_NAME)-$(POD_NUM).some-name-mysql.$(NAMESPACE_NAME).svc.cluster.local:33061"
 	conf.Params = map[string]string{"interpolateParams": "true"}
 
 	mysqlDB, err := sql.Open("mysql", conf.FormatDSN())
@@ -30,8 +30,8 @@ func (r *CustomMysqlReconciler) manageReplication(cr *v1alpha1.CustomMysql) erro
 // 1. Подключится к mysql ноде 0 и выполнить эти комманды
 
 // SET GLOBAL group_replication_group_name='aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa';
-// SET GLOBAL group_replication_local_address='$(cr.Name)-0.some-name-mysql.$(NAMESPACE_NAME).svc.cluster.local:33061';
-// SET GLOBAL group_replication_group_seeds='$(cr.Name)-0.some-name-mysql.$(NAMESPACE_NAME).svc.cluster.local:33061';
+// SET GLOBAL group_replication_local_address='$(Statefulset_NAME)-0.some-name-mysql.$(NAMESPACE_NAME).svc.cluster.local:33061';
+// SET GLOBAL group_replication_group_seeds='$(Statefulset_NAME)-0.some-name-mysql.$(NAMESPACE_NAME).svc.cluster.local:33061';
 // SET GLOBAL group_replication_ip_allowlist='0.0.0.0/0';
 // SET GLOBAL group_replication_recovery_get_public_key=ON;
 // SET GLOBAL group_replication_single_primary_mode=OFF;
@@ -41,8 +41,8 @@ func (r *CustomMysqlReconciler) manageReplication(cr *v1alpha1.CustomMysql) erro
 
 // 2. ПОДКЛЮЧИТСЯ К ОСТАЛЬНЫМ НОДАМ И ВЫПОЛНИТЬ
 // SET GLOBAL group_replication_group_name='aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa';
-// SET GLOBAL group_replication_local_address='$(cr.Name)-1.some-name-mysql.$(NAMESPACE_NAME).svc.cluster.local:33061';
-// SET GLOBAL group_replication_group_seeds='$(cr.Name)-0.some-name-mysql.$(NAMESPACE_NAME).svc.cluster.local:33061,$(cr.Name)-1.some-name-mysql.$(NAMESPACE_NAME).svc.cluster.local:33061';
+// SET GLOBAL group_replication_local_address='$(Statefulset_NAME)-1.some-name-mysql.$(NAMESPACE_NAME).svc.cluster.local:33061';
+// SET GLOBAL group_replication_group_seeds='$(Statefulset_NAME)-0.some-name-mysql.$(NAMESPACE_NAME).svc.cluster.local:33061,$(Statefulset_NAME)-1.some-name-mysql.$(NAMESPACE_NAME).svc.cluster.local:33061';
 // SET GLOBAL group_replication_ip_allowlist='0.0.0.0/0';
 // SET GLOBAL group_replication_recovery_get_public_key=ON;
 // SET GLOBAL group_replication_single_primary_mode=OFF;
